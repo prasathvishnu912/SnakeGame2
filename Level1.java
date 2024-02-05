@@ -69,7 +69,6 @@ public class Level1 {
 						System.out.println(name + " rolled at " + diceV + " and caught by snake moved from "
 								+ (position + diceV) + " to " + arr[0] + ".");
 						playersList.put(name, arr[0]);
-						count++;
 						continue innerLoop;
 					}
 				}
@@ -78,14 +77,13 @@ public class Level1 {
 						System.out.println(name + " rolled at " + diceV + " and find ladder moved from "
 								+ (position + diceV) + " to " + arr[1] + ".");
 						playersList.put(name, arr[1]);
-						count++;
 						continue innerLoop;
 					}
 				}
 
 				if (curPos == n) {
-					System.out
-					.println(name + " rolled at " + diceV + " and moved from " + position + " to " + curPos + ".");
+					System.out.println(
+							name + " rolled at " + diceV + " and moved from " + position + " to " + curPos + ".");
 
 					System.out.println(name + " wins in " + count + " th time dice Rotation");
 					break outerLoop;
