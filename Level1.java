@@ -1,12 +1,11 @@
 package com.game;
 
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Level1 { 
+public class Level1 {
 
 	static Scanner sc = new Scanner(System.in);
 	int[][] snakeInx;
@@ -57,56 +56,55 @@ public class Level1 {
 
 	private void getResult(int n) {
 
-
 		int count = 0;
 
 		Set<String> nameL = playersList.keySet();
-		outerLoop:
-		while(count<100) {
-
-			for(String name: nameL) {
+		outerLoop: while (count < 100) {
+			innerLoop: for (String name : nameL) {
 				int position = playersList.get(name);
-				if (position >= n) {
-					System.out.println(name + " wins in " + count + " th time dice Rotation");
-					break outerLoop;
-				} else {
-					int diceV = rotateDice();
-
-					for (int[] arr : snakeInx) {
-						if ((position + diceV) == arr[1]) {
-							System.out.println(name + " rolled at " + diceV + " and caught by snake moved from "
-									+ (position + diceV) + " to " + arr[0] + ".");
-							playersList.put(name, arr[0]);
-							count++;
-							continue;
-						}
-					}
-					for (int[] arr : ladderInx) {
-						if ((position + diceV) == arr[0]) {
-							System.out.println(name + " rolled at " + diceV + " and find ladder moved from "
-									+ (position + diceV) + " to " + arr[1] + ".");
-							playersList.put(name, arr[1]);
-							count++;
-							continue;
-						}
-					}
-
-					System.out.println(
-							name + " rolled at " + diceV + " and moved from " + position + " to " + (position + diceV) + ".");
-					playersList.put(name,position+diceV);
-					count++;
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+				int diceV = rotateDice();
+				int curPos = position + diceV;
+				for (int[] arr : snakeInx) {
+					if (curPos == arr[1]) {
+						System.out.println(name + " rolled at " + diceV + " and caught by snake moved from "
+								+ (position + diceV) + " to " + arr[0] + ".");
+						playersList.put(name, arr[0]);
+						count++;
+						continue innerLoop;
 					}
 				}
-		
-			}
-		}
-			
+				for (int[] arr : ladderInx) {
+					if (curPos == arr[0]) {
+						System.out.println(name + " rolled at " + diceV + " and find ladder moved from "
+								+ (position + diceV) + " to " + arr[1] + ".");
+						playersList.put(name, arr[1]);
+						count++;
+						continue innerLoop;
+					}
+				}
 
+				if (curPos == n) {
+					System.out
+					.println(name + " rolled at " + diceV + " and moved from " + position + " to " + curPos + ".");
+
+					System.out.println(name + " wins in " + count + " th time dice Rotation");
+					break outerLoop;
+				} else if (curPos > 100) {
+					curPos = position;
+				}
+				playersList.put(name, curPos);
+				System.out
+						.println(name + " rolled at " + diceV + " and moved from " + position + " to " + curPos + ".");
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			count++;
+
+		}
 	}
 
 	private void getSnakeIndex(int n) {
